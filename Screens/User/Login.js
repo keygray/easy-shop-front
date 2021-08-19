@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
 import { loginUser } from '../../Context/actions/Auth.actions'
 import AuthGlobal from '../../Context/store/AuthGlobal'
@@ -11,13 +12,19 @@ const Login = (props) => {
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('')
    const [error, setError] = useState('')
-
-
-   useEffect(() => {
-      if(context.stateUser.isAuthenticated === true) {
-         props.navigation.navigate("User Profile")
-      }
-   }, [context.stateUser.isAuthenticated])
+   useFocusEffect((
+      useCallback(
+         () => {
+            if(context.stateUser.isAuthenticated === true) {
+               props.navigation.navigate("User Profile")
+            }
+         }, 
+         [context.stateUser.isAuthenticated],
+      )
+   ))
+   // useEffect(() => {
+      
+   // }, [context.stateUser.isAuthenticated])
 
    const handleSubmit = () => {
       const user = {

@@ -35,7 +35,7 @@ const UserProfile = (props) => {
                setUserProfile(user.data)
                //console.log(user);
 
-            });
+            })
 
          axios
             .get(`${baseURL}orders`,{
@@ -52,7 +52,7 @@ const UserProfile = (props) => {
                   );
                   setOrders(userOrders);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error))   
       })
       .catch((err) => console.log(err))
 
@@ -60,9 +60,44 @@ const UserProfile = (props) => {
 
       return () => {
          setUserProfile();
-         setOrders([])
       }
    }, [context.stateUser.isAuthenticated])
+
+   
+   useFocusEffect((
+      useCallback(
+         () => {
+            AsyncStorage.getItem("jwt")
+            .then((res) => {
+      
+               axios
+                  .get(`${baseURL}orders`,{
+                     headers: { Authorization: `Bearer ${res}` },
+                  })
+                  .then((res) => {
+                        const data = res.data;
+                        const userOrders = data.filter(
+                           (order) => {
+                              if(order.user) {
+                                 return order.user._id  === context.stateUser.user.userId;
+                              }
+                           }
+                        );
+                        setOrders(userOrders);
+                  })
+                  .catch((error) => console.log(error));
+            })
+            .catch((err) => console.log(err))
+      
+      
+      
+            return () => {
+               setOrders([])
+            }
+         }, 
+         [context.stateUser.isAuthenticated],
+      )
+   ))
    return (
       <Container style={styles.container}>
          <ScrollView contentContainerStyle={styles.subContainer}>
