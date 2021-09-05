@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 // Stacks
@@ -20,10 +20,11 @@ const Main = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{
-        keyboardHidesTabBar: true,
-        showLabel: false,
-        activeTintColor: "#e91e63",
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: '#fff',
+        tabBarInactiveTintColor: '#8A8A8A',
+        tabBarStyle: [styles.tabBarContainer]
       }}
     >
       <Tab.Screen
@@ -88,3 +89,15 @@ const Main = () => {
 };
 
 export default Main;
+
+const styles = StyleSheet.create({
+  tabBarContainer: {
+    backgroundColor: "#183560",
+    position: "absolute",
+    left: 30,
+    right: 30,
+    bottom: 7,
+    height: 70,
+    borderRadius: 12
+  }
+})
